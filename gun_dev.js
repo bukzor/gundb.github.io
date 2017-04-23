@@ -136,13 +136,13 @@ $(document).ready(function(){
     isAnimating = true;
     // trigger page animation
     $('body').addClass('page-is-changing');
-    $('.cd-loading-bar').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(){
-      loadNewContent(url, bool);
-      newLocation = url;
-      $('.cd-loading-bar').off('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend');
-    });
-    //if browser doesn't support CSS transitions
-    if( !transitionsSupported() ) {
+    if( transitionsSupported() ) {
+      $('.cd-loading-bar').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(){
+        loadNewContent(url, bool);
+        newLocation = url;
+        $('.cd-loading-bar').off('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend');
+      });
+    } else {
       loadNewContent(url, bool);
       newLocation = url;
     }
@@ -156,7 +156,7 @@ $(document).ready(function(){
     //section.load(url+' .cd-main-content > *', function(event){
     section.load(url, function(event){
       // load new content and replace <main> content with the new one
-      $('main').html(section);
+      $('body > main').html(section);
       //if browser doesn't support CSS transitions - dont wait for the end of transitions
       var delay = ( transitionsSupported() ) ? 1200 : 0;
       setTimeout(function(){
